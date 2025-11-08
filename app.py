@@ -9,6 +9,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import json
 import requests
+import plotly.graph_objects as go
+import plotly.express as px
 
 # Page configuration
 st.set_page_config(
@@ -17,6 +19,16 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# Initialize session state for dark mode
+if 'dark_mode' not in st.session_state:
+    st.session_state.dark_mode = False
+
+# Simple view counter (session-based)
+if 'view_count' not in st.session_state:
+    st.session_state.view_count = 1
+else:
+    st.session_state.view_count += 1
 
 # Email configuration function
 def send_email_notification(name, email, subject, message):
@@ -176,15 +188,34 @@ def send_to_formspree(name, email, subject, message):
         return False, f"Formspree error: {str(e)}"
 
 # Custom CSS with animations and modern design
-st.markdown("""
+# Dynamic theming based on dark mode
+if st.session_state.dark_mode:
+    bg_color = "#1e1e1e"
+    text_color = "#e0e0e0"
+    card_bg = "rgba(40, 40, 40, 0.8)"
+    hover_shadow = "rgba(102, 126, 234, 0.5)"
+    sub_text = "#b0b0b0"
+else:
+    bg_color = "#ffffff"
+    text_color = "#333333"
+    card_bg = "rgba(255, 255, 255, 0.9)"
+    hover_shadow = "rgba(102, 126, 234, 0.3)"
+    sub_text = "#666666"
+
+st.markdown(f"""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
     
-    * {
+    * {{
         font-family: 'Poppins', sans-serif;
-    }
+    }}
     
-    .main-header {
+    .stApp {{
+        background-color: {bg_color};
+        color: {text_color};
+    }}
+    
+    .main-header {{
         font-size: 4rem;
         font-weight: 700;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -193,17 +224,17 @@ st.markdown("""
         text-align: center;
         margin-bottom: 0;
         animation: fadeInDown 1s ease-in;
-    }
+    }}
     
-    .sub-header {
+    .sub-header {{
         font-size: 1.5rem;
-        color: #666;
+        color: {sub_text};
         text-align: center;
         margin-top: 0;
         animation: fadeInUp 1s ease-in;
-    }
+    }}
     
-    .section-header {
+    .section-header {{
         font-size: 2.2rem;
         font-weight: 600;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -214,9 +245,9 @@ st.markdown("""
         padding-bottom: 10px;
         margin-top: 30px;
         margin-bottom: 20px;
-    }
+    }}
     
-    .contact-info {
+    .contact-info {{
         text-align: center;
         font-size: 1.1rem;
         margin-bottom: 30px;
@@ -224,21 +255,22 @@ st.markdown("""
         background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
         border-radius: 15px;
         animation: fadeIn 1.5s ease-in;
-    }
+        color: {text_color};
+    }}
     
-    .contact-info a {
+    .contact-info a {{
         color: #667eea;
         text-decoration: none;
         font-weight: 500;
         transition: all 0.3s ease;
-    }
+    }}
     
-    .contact-info a:hover {
+    .contact-info a:hover {{
         color: #764ba2;
         transform: scale(1.1);
-    }
+    }}
     
-    .skill-badge {
+    .skill-badge {{
         display: inline-block;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
@@ -249,15 +281,15 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         transition: all 0.3s ease;
         animation: fadeInUp 0.5s ease-in;
-    }
+    }}
     
-    .skill-badge:hover {
+    .skill-badge:hover {{
         transform: translateY(-5px);
         box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-    }
+    }}
     
-    .experience-card {
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    .experience-card {{
+        background: {card_bg};
         padding: 25px;
         border-radius: 15px;
         margin-bottom: 20px;
@@ -265,15 +297,15 @@ st.markdown("""
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         transition: all 0.3s ease;
         animation: slideInLeft 0.5s ease-in;
-    }
+    }}
     
-    .experience-card:hover {
+    .experience-card:hover {{
         transform: translateX(10px);
-        box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3);
-    }
+        box-shadow: 0 8px 15px {hover_shadow};
+    }}
     
-    .project-card {
-        background: linear-gradient(135deg, rgba(67, 160, 71, 0.05) 0%, rgba(56, 142, 60, 0.05) 100%);
+    .project-card {{
+        background: {card_bg};
         padding: 25px;
         border-radius: 15px;
         margin-bottom: 20px;
@@ -281,104 +313,150 @@ st.markdown("""
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         transition: all 0.3s ease;
         animation: slideInRight 0.5s ease-in;
-    }
+    }}
     
-    .project-card:hover {
+    .project-card:hover {{
         transform: translateY(-5px);
         box-shadow: 0 8px 15px rgba(67, 160, 71, 0.3);
-    }
+    }}
     
-    .metric-card {
-        background: white;
+    .metric-card {{
+        background: {card_bg};
         padding: 20px;
         border-radius: 15px;
         text-align: center;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         transition: all 0.3s ease;
-    }
+    }}
     
-    .metric-card:hover {
+    .metric-card:hover {{
         transform: scale(1.05);
-        box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3);
-    }
+        box-shadow: 0 8px 15px {hover_shadow};
+    }}
     
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
+    @keyframes fadeIn {{
+        from {{ opacity: 0; }}
+        to {{ opacity: 1; }}
+    }}
     
-    @keyframes fadeInDown {
-        from {
+    @keyframes fadeInDown {{
+        from {{
             opacity: 0;
             transform: translateY(-20px);
-        }
-        to {
+        }}
+        to {{
             opacity: 1;
             transform: translateY(0);
-        }
-    }
+        }}
+    }}
     
-    @keyframes fadeInUp {
-        from {
+    @keyframes fadeInUp {{
+        from {{
             opacity: 0;
             transform: translateY(20px);
-        }
-        to {
+        }}
+        to {{
             opacity: 1;
             transform: translateY(0);
-        }
-    }
+        }}
+    }}
     
-    @keyframes slideInLeft {
-        from {
+    @keyframes slideInLeft {{
+        from {{
             opacity: 0;
             transform: translateX(-50px);
-        }
-        to {
+        }}
+        to {{
             opacity: 1;
             transform: translateX(0);
-        }
-    }
+        }}
+    }}
     
-    @keyframes slideInRight {
-        from {
+    @keyframes slideInRight {{
+        from {{
             opacity: 0;
             transform: translateX(50px);
-        }
-        to {
+        }}
+        to {{
             opacity: 1;
             transform: translateX(0);
-        }
-    }
+        }}
+    }}
     
     /* Streamlit specific overrides */
-    .stTabs [data-baseweb="tab-list"] {
+    .stTabs [data-baseweb="tab-list"] {{
         gap: 8px;
-    }
+    }}
     
-    .stTabs [data-baseweb="tab"] {
+    .stTabs [data-baseweb="tab"] {{
         background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
         border-radius: 10px;
         padding: 10px 20px;
         font-weight: 500;
-    }
+    }}
     
-    .stTabs [aria-selected="true"] {
+    .stTabs [aria-selected="true"] {{
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-    }
+    }}
     
-    div[data-testid="stMetricValue"] {
+    div[data-testid="stMetricValue"] {{
         font-size: 2rem;
         font-weight: 700;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-    }
+    }}
     
-    .stProgress > div > div > div {
+    .stProgress > div > div > div {{
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
+    }}
+    
+    /* Ensure text visibility in both modes */
+    p, li, span, div {{
+        color: {text_color} !important;
+    }}
+    
+    h1, h2, h3, h4, h5, h6 {{
+        color: {text_color} !important;
+    }}
+    
+    /* Keep gradient text headers */
+    .main-header, .section-header {{
+        color: transparent !important;
+    }}
+    
+    /* Ensure Streamlit markdown text is visible */
+    .stMarkdown {{
+        color: {text_color};
+    }}
+    
+    /* Print-friendly styles */
+    @media print {{
+        .stApp {{
+            background-color: white !important;
+        }}
+        
+        button, .stDownloadButton, .stButton {{
+            display: none !important;
+        }}
+        
+        [data-testid="stSidebar"] {{
+            display: none !important;
+        }}
+        
+        .main-header, .section-header {{
+            color: #333 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }}
+        
+        .experience-card, .project-card {{
+            page-break-inside: avoid;
+            border: 1px solid #ddd !important;
+            box-shadow: none !important;
+        }}
+    }}
     </style>
     """, unsafe_allow_html=True)
 
@@ -389,11 +467,22 @@ st.markdown('<p class="sub-header">🚀 Senior Software Engineer | 🤖 AI/ML Ex
 # Contact Information
 st.markdown("""
     <div class="contact-info">
-        📧 shivammalviyawork@gmail.com | 📱 +91 7247380914 | 
+        📧 shivammalviyawork@gmail.com | 📱 ********** | 
         💼 <a href="https://www.linkedin.com/in/shivam-malviya-6981b8192/" target="_blank">LinkedIn</a> | 
         💻 <a href="https://github.com/Shivam08-byte" target="_blank">GitHub</a>
     </div>
     """, unsafe_allow_html=True)
+
+# Share and Copy Link Section
+col1, col2, col3, col4, col5 = st.columns([1, 1, 1, 1, 2])
+with col2:
+    if st.button("🔗 Copy Link", use_container_width=True):
+        st.code("https://resumeshivammalviyawork.streamlit.app/", language=None)
+        st.success("✅ Link ready to copy!")
+with col3:
+    st.link_button("📱 Share on LinkedIn", "https://www.linkedin.com/sharing/share-offsite/?url=https://resumeshivammalviyawork.streamlit.app/", use_container_width=True)
+with col4:
+    st.link_button("🐦 Share on X", "https://twitter.com/intent/tweet?url=https://resumeshivammalviyawork.streamlit.app/&text=Check%20out%20my%20interactive%20resume!", use_container_width=True)
 
 # Tabs for different sections
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["🎯 About", "💼 Experience", "🚀 Projects", "🛠️ Skills", "🎓 Education", "📬 Contact"])
@@ -422,12 +511,100 @@ with tab1:
         - Follow Agile methodologies
         - Deliver solutions that scale and perform
         """)
+        
+        st.markdown("---")
+        
+        st.markdown("### 🌐 Connect With Me")
+        
+        col_a, col_b, col_c, col_d = st.columns(4)
+        
+        with col_a:
+            st.markdown("""
+            <a href="https://www.linkedin.com/in/shivam-malviya-6981b8192/" target="_blank" style="text-decoration: none;">
+                <div style="padding: 20px; background: linear-gradient(135deg, #0077B5, #00A0DC); border-radius: 15px; text-align: center; color: white; transition: transform 0.3s;">
+                    <div style="font-size: 2.5rem;">💼</div>
+                    <div><strong>LinkedIn</strong></div>
+                </div>
+            </a>
+            """, unsafe_allow_html=True)
+        
+        with col_b:
+            st.markdown("""
+            <a href="https://github.com/Shivam08-byte" target="_blank" style="text-decoration: none;">
+                <div style="padding: 20px; background: linear-gradient(135deg, #333, #555); border-radius: 15px; text-align: center; color: white; transition: transform 0.3s;">
+                    <div style="font-size: 2.5rem;">💻</div>
+                    <div><strong>GitHub</strong></div>
+                </div>
+            </a>
+            """, unsafe_allow_html=True)
+        
+        with col_c:
+            st.markdown("""
+            <a href="mailto:shivammalviyawork@gmail.com" style="text-decoration: none;">
+                <div style="padding: 20px; background: linear-gradient(135deg, #EA4335, #FBBC05); border-radius: 15px; text-align: center; color: white; transition: transform 0.3s;">
+                    <div style="font-size: 2.5rem;">📧</div>
+                    <div><strong>Email</strong></div>
+                </div>
+            </a>
+            """, unsafe_allow_html=True)
+        
+        with col_d:
+            st.markdown("""
+            <a href="tel:+" style="text-decoration: none;">
+                <div style="padding: 20px; background: linear-gradient(135deg, #25D366, #128C7E); border-radius: 15px; text-align: center; color: white; transition: transform 0.3s;">
+                    <div style="font-size: 2.5rem;">📱</div>
+                    <div><strong>Phone</strong></div>
+                </div>
+            </a>
+            """, unsafe_allow_html=True)
     
     with col2:
         st.markdown("""
         <div style="text-align: center; padding: 20px;">
             <div style="width: 150px; height: 150px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);">
                 👨‍💻
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("---")
+    
+    st.markdown("### 💬 Testimonials & Recommendations")
+    
+    col_t1, col_t2 = st.columns(2)
+    
+    with col_t1:
+        st.markdown("""
+        <div style="padding: 20px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%); border-radius: 15px; border-left: 4px solid #667eea; margin: 10px 0;">
+            <p style="font-style: italic; color: #555; margin-bottom: 15px;">
+                "Shivam consistently delivers high-quality solutions with excellent attention to detail. His expertise in ML pipelines and cloud technologies is impressive."
+            </p>
+            <div style="display: flex; align-items: center;">
+                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 1.5rem;">
+                    👤
+                </div>
+                <div>
+                    <p style="margin: 0; font-weight: 600; color: #667eea;">Senior Tech Lead</p>
+                    <p style="margin: 0; font-size: 0.9rem; color: #999;">HCL Software</p>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col_t2:
+        st.markdown("""
+        <div style="padding: 20px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%); border-radius: 15px; border-left: 4px solid #667eea; margin: 10px 0;">
+            <p style="font-style: italic; color: #555; margin-bottom: 15px;">
+                "Outstanding problem-solving skills and ability to work with complex systems. A valuable team member who goes above and beyond."
+            </p>
+            <div style="display: flex; align-items: center;">
+                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #43A047, #66BB6A); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 1.5rem;">
+                    👤
+                </div>
+                <div>
+                    <p style="margin: 0; font-weight: 600; color: #667eea;">Project Manager</p>
+                    <p style="margin: 0; font-size: 0.9rem; color: #999;">HCL Software</p>
+                </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -445,7 +622,60 @@ with tab1:
         st.metric("Performance Boost", "50%", "Data Pipelines ⚡")
 
 with tab2:
-    st.markdown('<p class="section-header">Work Experience</p>', unsafe_allow_html=True)
+    st.markdown('<p class="section-header">Professional Experience</p>', unsafe_allow_html=True)
+    
+    # Add Timeline Visualization
+    st.markdown("### 📅 Career Timeline")
+    
+    timeline_data = {
+        'Role': ['Programmer Analyst Trainee', 'Senior Software Engineer', 'Senior Software Engineer'],
+        'Company': ['Cognizant', 'HCL Software', 'HCL Software'],
+        'Project': ['Internship', 'Connector Framework', 'AION Project'],
+        'Start': ['2022-01-01', '2022-08-01', '2023-06-01'],
+        'End': ['2022-07-31', '2023-05-31', '2024-12-31'],
+        'Duration_Months': [7, 10, 18]
+    }
+    
+    import pandas as pd
+    df_timeline = pd.DataFrame(timeline_data)
+    df_timeline['Start'] = pd.to_datetime(df_timeline['Start'])
+    df_timeline['End'] = pd.to_datetime(df_timeline['End'])
+    
+    fig_timeline = px.timeline(
+        df_timeline,
+        x_start='Start',
+        x_end='End',
+        y='Company',
+        color='Project',
+        hover_data=['Role', 'Duration_Months'],
+        title='',
+        color_discrete_map={
+            'Internship': '#764ba2',
+            'Connector Framework': '#667eea',
+            'AION Project': '#43A047'
+        }
+    )
+    
+    fig_timeline.update_layout(
+        showlegend=True,
+        height=300,
+        xaxis_title='Timeline',
+        yaxis_title='',
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(size=12),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        )
+    )
+    
+    st.plotly_chart(fig_timeline, use_container_width=True)
+    
+    st.markdown("---")
     
     st.markdown("""
     <div class="experience-card">
@@ -502,6 +732,11 @@ with tab3:
             </ul>
             <p><strong>Impact:</strong> Doubled operational efficiency during testing</p>
             <p><strong>Tech Stack:</strong> Python, Django, SQLite, Azure K8s, Docker</p>
+            <p style="margin-top: 15px;">
+                <a href="https://github.com/Shivam08-byte" target="_blank" style="text-decoration: none; color: #667eea; font-weight: 500;">
+                    💻 View on GitHub →
+                </a>
+            </p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -517,6 +752,11 @@ with tab3:
             </ul>
             <p><strong>Impact:</strong> 30% improvement in integration efficiency</p>
             <p><strong>Tech Stack:</strong> NiFi, Java, Docker, PostgreSQL</p>
+            <p style="margin-top: 15px;">
+                <a href="https://github.com/Shivam08-byte" target="_blank" style="text-decoration: none; color: #667eea; font-weight: 500;">
+                    💻 View on GitHub →
+                </a>
+            </p>
         </div>
         """, unsafe_allow_html=True)
     
@@ -533,6 +773,11 @@ with tab3:
             </ul>
             <p><strong>Impact:</strong> Streamlined document review process</p>
             <p><strong>Tech Stack:</strong> Python, Generative AI, Django, FastAPI</p>
+            <p style="margin-top: 15px;">
+                <a href="https://github.com/Shivam08-byte" target="_blank" style="text-decoration: none; color: #667eea; font-weight: 500;">
+                    💻 View on GitHub →
+                </a>
+            </p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -548,6 +793,11 @@ with tab3:
             </ul>
             <p><strong>Impact:</strong> Enhanced prediction accuracy</p>
             <p><strong>Tech Stack:</strong> Python, Machine Learning, Azure, Django</p>
+            <p style="margin-top: 15px;">
+                <a href="https://github.com/Shivam08-byte" target="_blank" style="text-decoration: none; color: #667eea; font-weight: 500;">
+                    💻 View on GitHub →
+                </a>
+            </p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -557,38 +807,39 @@ with tab4:
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### Programming Languages")
-        languages = ["Python", "Java", "Shell Scripting", "JavaScript", "SQL"]
+        st.markdown("### 💻 Programming Languages")
+        languages = ["🐍 Python", "☕ Java", "🐚 Shell Scripting", "📜 JavaScript", "🗄️ SQL"]
         st.markdown(" ".join([f'<span class="skill-badge">{skill}</span>' for skill in languages]), unsafe_allow_html=True)
         
-        st.markdown("### Frameworks & Libraries")
-        frameworks = ["Django", "FastAPI", "ReactJS", "NiFi", "TensorFlow"]
+        st.markdown("### 🎨 Frameworks & Libraries")
+        frameworks = ["🎯 Django", "⚡ FastAPI", "⚛️ ReactJS", "🔄 NiFi", "🤖 TensorFlow"]
         st.markdown(" ".join([f'<span class="skill-badge">{fw}</span>' for fw in frameworks]), unsafe_allow_html=True)
         
-        st.markdown("### Databases & Caching")
-        databases = ["SQLite", "PostgreSQL", "Redis", "MySQL"]
+        st.markdown("### 🗄️ Databases & Caching")
+        databases = ["💾 SQLite", "🐘 PostgreSQL", "🔴 Redis", "🐬 MySQL"]
         st.markdown(" ".join([f'<span class="skill-badge">{db}</span>' for db in databases]), unsafe_allow_html=True)
         
-        st.markdown("### ITSM Tools")
-        itsm = ["ServiceNow", "Jira", "Zendesk", "Confluence"]
+        st.markdown("### 🎫 ITSM Tools")
+        itsm = ["🔧 ServiceNow", "📋 Jira", "💬 Zendesk", "📚 Confluence"]
         st.markdown(" ".join([f'<span class="skill-badge">{tool}</span>' for tool in itsm]), unsafe_allow_html=True)
     
     with col2:
-        st.markdown("### Cloud & DevOps")
-        cloud = ["Azure", "Azure Kubernetes (AKS)", "Docker", "Kubernetes", "JMeter", "GitLab"]
+        st.markdown("### ☁️ Cloud & DevOps")
+        cloud = ["☁️ Azure", "🎯 Azure Kubernetes (AKS)", "🐳 Docker", "⚓ Kubernetes", "📊 JMeter", "🦊 GitLab"]
         st.markdown(" ".join([f'<span class="skill-badge">{c}</span>' for c in cloud]), unsafe_allow_html=True)
         
-        st.markdown("### Operating Systems")
-        os_list = ["Windows", "Ubuntu", "Debian", "Linux"]
+        st.markdown("### 💻 Operating Systems")
+        os_list = ["🪟 Windows", "🐧 Ubuntu", "🐧 Debian", "🐧 Linux"]
         st.markdown(" ".join([f'<span class="skill-badge">{os}</span>' for os in os_list]), unsafe_allow_html=True)
         
-        st.markdown("### Specialized Skills")
-        specialized = ["Machine Learning Pipelines", "Generative AI", "Data Augmentation", "Univariate Forecasting", "Docker Swarm"]
+        st.markdown("### 🚀 Specialized Skills")
+        specialized = ["🤖 Machine Learning Pipelines", "🧠 Generative AI", "📊 Data Augmentation", "📈 Univariate Forecasting", "🐳 Docker Swarm"]
         st.markdown(" ".join([f'<span class="skill-badge">{s}</span>' for s in specialized]), unsafe_allow_html=True)
     
     st.markdown("---")
     st.markdown("### 📈 Skill Proficiency")
     
+    # Interactive Radar Chart
     skill_data = {
         "Python": 95,
         "Django": 90,
@@ -600,9 +851,60 @@ with tab4:
         "Generative AI": 80
     }
     
-    for skill, level in skill_data.items():
-        st.write(f"**{skill}**")
-        st.progress(level / 100)
+    # Create radar chart
+    categories = list(skill_data.keys())
+    values = list(skill_data.values())
+    
+    fig = go.Figure()
+    
+    fig.add_trace(go.Scatterpolar(
+        r=values,
+        theta=categories,
+        fill='toself',
+        fillcolor='rgba(102, 126, 234, 0.3)',
+        line=dict(color='#667eea', width=2),
+        marker=dict(size=8, color='#764ba2'),
+        name='Skills',
+        hovertemplate='<b>%{theta}</b><br>Proficiency: %{r}%<extra></extra>'
+    ))
+    
+    fig.update_layout(
+        polar=dict(
+            radialaxis=dict(
+                visible=True,
+                range=[0, 100],
+                showticklabels=True,
+                ticks='outside',
+                tickfont=dict(size=10),
+                gridcolor='rgba(102, 126, 234, 0.2)'
+            ),
+            angularaxis=dict(
+                tickfont=dict(size=12, color='#333'),
+                rotation=90
+            ),
+            bgcolor='rgba(0,0,0,0)'
+        ),
+        showlegend=False,
+        title=dict(
+            text="Interactive Skills Visualization",
+            font=dict(size=16, color='#667eea')
+        ),
+        height=500,
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)'
+    )
+    
+    st.plotly_chart(fig, use_container_width=True)
+    
+    # Also show progress bars for non-interactive view
+    with st.expander("📊 View Detailed Skill Levels"):
+        for skill, level in skill_data.items():
+            col_a, col_b = st.columns([3, 1])
+            with col_a:
+                st.write(f"**{skill}**")
+                st.progress(level / 100)
+            with col_b:
+                st.markdown(f"<p style='text-align: right; margin-top: 5px;'>{level}%</p>", unsafe_allow_html=True)
 
 with tab5:
     st.markdown('<p class="section-header">Education & Certifications</p>', unsafe_allow_html=True)
@@ -675,6 +977,49 @@ with tab5:
             <p style="font-size: 0.9rem; color: #666;">International Impact</p>
         </div>
         """, unsafe_allow_html=True)
+    
+    st.markdown("---")
+    
+    st.markdown("### 📊 Impact Metrics Dashboard")
+    
+    # Create metrics visualization
+    metrics_data = {
+        'Metric': ['Performance\nBoost', 'Security\nIncrease', 'Efficiency\nGain', 'Time\nReduction'],
+        'Percentage': [50, 40, 100, 25],
+        'Category': ['Data Pipeline', 'Security', 'Operations', 'Deployment']
+    }
+    
+    df_metrics = pd.DataFrame(metrics_data)
+    
+    fig_metrics = go.Figure()
+    
+    fig_metrics.add_trace(go.Bar(
+        x=df_metrics['Metric'],
+        y=df_metrics['Percentage'],
+        marker=dict(
+            color=df_metrics['Percentage'],
+            colorscale=[[0, '#764ba2'], [0.5, '#667eea'], [1, '#43A047']],
+            line=dict(color='rgba(102, 126, 234, 0.8)', width=2)
+        ),
+        text=df_metrics['Percentage'].apply(lambda x: f'{x}%'),
+        textposition='outside',
+        hovertemplate='<b>%{x}</b><br>Impact: %{y}%<br><extra></extra>'
+    ))
+    
+    fig_metrics.update_layout(
+        title=dict(
+            text="Key Performance Improvements",
+            font=dict(size=16, color='#667eea')
+        ),
+        xaxis=dict(title='', tickfont=dict(size=11)),
+        yaxis=dict(title='Improvement (%)', range=[0, 110]),
+        height=350,
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        showlegend=False
+    )
+    
+    st.plotly_chart(fig_metrics, use_container_width=True)
 
 with tab6:
     st.markdown('<p class="section-header">Get In Touch</p>', unsafe_allow_html=True)
@@ -777,7 +1122,7 @@ with tab6:
     
     with col2:
         st.markdown("### 📞 Direct Contact")
-        st.markdown("""<div style="padding: 20px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); border-radius: 15px; margin-top: 10px;"><h4 style="color: #667eea;">📧 Email</h4><p><a href="mailto:shivammalviyawork@gmail.com" style="color: #667eea; text-decoration: none; font-weight: 500;">shivammalviyawork@gmail.com</a></p><h4 style="color: #667eea; margin-top: 20px;">📱 Phone</h4><p style="font-weight: 500;">+91 7247380914</p><h4 style="color: #667eea; margin-top: 20px;">💼 LinkedIn</h4><p><a href="https://www.linkedin.com/in/shivam-malviya-6981b8192/" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 500;">Connect on LinkedIn</a></p><h4 style="color: #667eea; margin-top: 20px;">💻 GitHub</h4><p><a href="https://github.com/Shivam08-byte" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 500;">Check out my projects</a></p></div>""", unsafe_allow_html=True)
+        st.markdown("""<div style="padding: 20px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); border-radius: 15px; margin-top: 10px;"><h4 style="color: #667eea;">📧 Email</h4><p><a href="mailto:shivammalviyawork@gmail.com" style="color: #667eea; text-decoration: none; font-weight: 500;">shivammalviyawork@gmail.com</a></p><h4 style="color: #667eea; margin-top: 20px;">📱 Phone</h4><p style="font-weight: 500;">**********</p><h4 style="color: #667eea; margin-top: 20px;">💼 LinkedIn</h4><p><a href="https://www.linkedin.com/in/shivam-malviya-6981b8192/" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 500;">Connect on LinkedIn</a></p><h4 style="color: #667eea; margin-top: 20px;">💻 GitHub</h4><p><a href="https://github.com/Shivam08-byte" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 500;">Check out my projects</a></p></div>""", unsafe_allow_html=True)
         
         st.markdown("<br>", unsafe_allow_html=True)
         
@@ -800,6 +1145,16 @@ st.markdown("""
 
 # Sidebar - Download Resume Option
 with st.sidebar:
+    st.markdown("### 🎨 Theme Settings")
+    
+    # Dark mode toggle
+    dark_mode_label = "🌙 Dark Mode" if not st.session_state.dark_mode else "☀️ Light Mode"
+    if st.button(dark_mode_label, use_container_width=True):
+        st.session_state.dark_mode = not st.session_state.dark_mode
+        st.rerun()
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
     st.markdown("### 📄 Resume Options")
     
     # Animated info box
@@ -816,10 +1171,21 @@ with st.sidebar:
     st.markdown("""
     <div style="line-height: 2;">
         📧 <a href="mailto:shivammalviyawork@gmail.com" style="text-decoration: none; color: #667eea;">shivammalviyawork@gmail.com</a><br>
-        📱 <strong>+91 7247380914</strong><br>
+        📱 <strong>+91 ***********</strong><br>
         💼 <a href="https://www.linkedin.com/in/shivam-malviya-6981b8192/" target="_blank" style="text-decoration: none; color: #667eea;">LinkedIn Profile</a><br>
         💻 <a href="https://github.com/Shivam08-byte" target="_blank" style="text-decoration: none; color: #667eea;">GitHub Portfolio</a>
     </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # View Counter
+    st.markdown("### 👀 Analytics")
+    st.markdown(f"""
+        <div style="padding: 15px; background: linear-gradient(135deg, rgba(67, 160, 71, 0.1) 0%, rgba(67, 200, 71, 0.1) 100%); border-radius: 10px; text-align: center; border: 2px solid #43A047;">
+            <h2 style="color: #43A047; margin: 5px 0;">{st.session_state.view_count}</h2>
+            <p style="margin: 0; color: #666;">Page Views (This Session)</p>
+        </div>
     """, unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
@@ -843,9 +1209,32 @@ with st.sidebar:
     st.markdown("<br>", unsafe_allow_html=True)
     
     if st.button("📥 Download PDF Resume", use_container_width=True):
-        st.info("🎉 PDF download feature - connect to your actual resume file!")
+        # Check if PDF exists
+        pdf_path = "shivam_malviya_resd2.pdf"
+        if os.path.exists(pdf_path):
+            with open(pdf_path, "rb") as pdf_file:
+                st.download_button(
+                    label="📄 Click Here to Download",
+                    data=pdf_file,
+                    file_name="Shivam_Malviya_Resume.pdf",
+                    mime="application/pdf",
+                    use_container_width=True
+                )
+        else:
+            st.info("PDF resume will be available soon!")
     
-    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Print button
+    st.markdown("### 🖨️ Print Options")
+    st.markdown("""
+        <div style="padding: 10px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); border-radius: 8px;">
+            <p style="margin: 5px 0; font-size: 0.9rem;">📄 Use browser's print function (Ctrl/Cmd + P)</p>
+            <p style="margin: 5px 0; font-size: 0.9rem;">📱 Or download PDF above</p>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("<br>", unsafe_allow_html=True)
     
     # Contact form submissions viewer
     st.markdown("### 📨 Form Submissions")
