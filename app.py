@@ -1,6 +1,9 @@
 import streamlit as st
 from datetime import datetime
 import base64
+import csv
+import os
+from pathlib import Path
 
 # Page configuration
 st.set_page_config(
@@ -535,21 +538,36 @@ with tab6:
             
             if submitted:
                 if name and email and message:
-                    st.success(f"✅ Thank you, {name}! Your message has been received. I'll get back to you soon!")
-                    st.balloons()
+                    # Save to CSV file
+                    csv_file = 'contact_submissions.csv'
+                    file_exists = os.path.isfile(csv_file)
                     
-                    # Here you can add email functionality or save to a database
-                    # For now, we'll just show a success message
-                    
-                    st.info(f"""
-                    **Message Details:**
-                    - **Name:** {name}
-                    - **Email:** {email}
-                    - **Subject:** {subject}
-                    - **Message:** {message}
-                    
-                    _Note: In production, this would be sent via email or saved to a database._
-                    """)
+                    try:
+                        with open(csv_file, 'a', newline='', encoding='utf-8') as f:
+                            writer = csv.writer(f)
+                            if not file_exists:
+                                # Write header if file doesn't exist
+                                writer.writerow(['Timestamp', 'Name', 'Email', 'Subject', 'Message'])
+                            # Write the submission
+                            writer.writerow([
+                                datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                                name,
+                                email,
+                                subject,
+                                message
+                            ])
+                        
+                        st.success(f"✅ Thank you, {name}! Your message has been received. I'll get back to you soon!")
+                        st.balloons()
+                        
+                        st.info(f"""
+                        **Message saved successfully!**
+                        
+                        Your contact details have been recorded and saved to `contact_submissions.csv`.
+                        You can check this file to see all form submissions.
+                        """)
+                    except Exception as e:
+                        st.error(f"⚠️ Error saving message: {str(e)}")
                 else:
                     st.error("⚠️ Please fill in all required fields!")
     
@@ -623,6 +641,34 @@ with st.sidebar:
     if st.button("📥 Download PDF Resume", use_container_width=True):
         st.balloons()
         st.info("🎉 PDF download feature - connect to your actual resume file!")
+    
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    
+    # Contact form submissions viewer
+    st.markdown("### 📨 Form Submissions")
+    csv_file = 'contact_submissions.csv'
+    if os.path.isfile(csv_file):
+        try:
+            import pandas as pd
+            df = pd.read_csv(csv_file)
+            st.metric("Total Messages", len(df))
+            
+            if st.button("👀 View Submissions", use_container_width=True):
+                st.dataframe(df, use_container_width=True)
+            
+            # Download button for CSV
+            with open(csv_file, 'rb') as f:
+                st.download_button(
+                    label="📥 Download Submissions CSV",
+                    data=f,
+                    file_name="contact_submissions.csv",
+                    mime="text/csv",
+                    use_container_width=True
+                )
+        except Exception as e:
+            st.warning("No submissions yet")
+    else:
+        st.info("No messages received yet")
     
     st.markdown("<br><br>", unsafe_allow_html=True)
     

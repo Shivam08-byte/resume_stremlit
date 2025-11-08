@@ -34,3 +34,6 @@ wheels/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Contact form submissions (contains personal data)
+contact_submissions.csv
