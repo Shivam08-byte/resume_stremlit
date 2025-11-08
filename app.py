@@ -219,12 +219,12 @@ st.markdown("""
 
 # Header
 st.markdown('<p class="main-header">✨ Shivam Malviya ✨</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">🚀 Software Developer | 🤖 AI/ML Enthusiast | ☁️ Cloud Architect</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">🚀 Senior Software Engineer | 🤖 AI/ML Expert | ☁️ Cloud & Automation Specialist</p>', unsafe_allow_html=True)
 
 # Contact Information
 st.markdown("""
     <div class="contact-info">
-        📧 shivammalviyawork@gmail.com | 📱 +91-XXXXXXXXXX | 
+        📧 shivammalviyawork@gmail.com | 📱 +91 7247380914 | 
         💼 <a href="https://www.linkedin.com/in/shivam-malviya-6981b8192/" target="_blank">LinkedIn</a> | 
         💻 <a href="https://github.com/Shivam08-byte" target="_blank">GitHub</a>
     </div>
@@ -242,15 +242,20 @@ with tab1:
         st.write("""
         ### 👋 Hello! I'm Shivam
         
-        Passionate software developer with expertise in building **scalable web applications** and **AI/ML solutions**. 
-        Strong background in full-stack development, data analysis, and problem-solving. Committed to writing 
-        clean, maintainable code and continuously learning new technologies.
+        **Senior Software Engineer** and automation expert with strong expertise in **Python, Django, Azure**, 
+        and database systems. Specialized in developing **AI/ML-driven solutions** and automating processes 
+        using cloud technologies to optimize performance and scalability.
         
-        💡 **What I Love:**
-        - Building impactful products that solve real problems
-        - Exploring cutting-edge AI/ML technologies
-        - Collaborating with talented teams
-        - Open source contributions
+        💡 **What I Do:**
+        - Build low-code/no-code ML pipeline tools
+        - Design and deploy scalable cloud solutions on Azure Kubernetes
+        - Develop Gen AI-based applications and data integration systems
+        - Optimize database architectures for high-performance applications
+        
+        🎯 **My Approach:**
+        - Focus on automation and efficiency
+        - Follow Agile methodologies
+        - Deliver solutions that scale and perform
         """)
     
     with col2:
@@ -268,50 +273,48 @@ with tab1:
     with col1:
         st.metric("Years of Experience", "3+", "Growing 🌱")
     with col2:
-        st.metric("Projects Completed", "15+", "And counting 🎯")
+        st.metric("Projects Completed", "10+", "Enterprise Scale 🎯")
     with col3:
-        st.metric("Technologies", "20+", "Always learning 📚")
+        st.metric("Technologies", "25+", "Always learning 📚")
     with col4:
-        st.metric("Coffee Consumed", "∞", "Fuel for code ☕")
+        st.metric("Performance Boost", "50%", "Data Pipelines ⚡")
 
 with tab2:
     st.markdown('<p class="section-header">Work Experience</p>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="experience-card">
-        <h3>💼 Senior Software Developer</h3>
-        <p><strong>🏢 Tech Solutions Inc.</strong> | 📅 Jan 2023 - Present</p>
+        <h3>💼 Senior Software Engineer 1</h3>
+        <p><strong>🏢 HCL Soft, Noida, India</strong> | 📅 Aug 2022 - Present</p>
+        <h4 style="color: #667eea; margin-top: 15px;">🚀 AION Project</h4>
         <ul>
-            <li>🚀 Led development of a microservices-based e-commerce platform serving 100K+ users</li>
-            <li>⚡ Implemented CI/CD pipelines reducing deployment time by 60%</li>
-            <li>👥 Mentored junior developers and conducted code reviews</li>
-            <li>🛠️ Technologies: Python, Django, React, PostgreSQL, AWS, Docker</li>
+            <li>�️ Developed a <strong>low-code/no-code ML pipeline tool</strong> backend using Python, Django, and SQLite, streamlining ML lifecycle management</li>
+            <li>⚡ Engineered a data ingestion pipeline with a <strong>50% performance boost</strong> and implemented Univariate Forecasting and Data Augmentation for time series analytics</li>
+            <li>☁️ Deployed the platform on <strong>Azure Kubernetes (K8s)</strong> with a load balancer, <strong>doubling operational efficiency</strong> during testing</li>
+            <li>🎯 Designed and executed the <strong>Bring Your Own Model (BYOM)</strong> feature, integrating custom ML models seamlessly into the pipeline</li>
+            <li>🤖 Developed a <strong>Gen AI-based document summarization</strong> feature for the GEM Portal, enabling efficient extraction of critical content</li>
+            <li>🌍 Consulted on SX integration with BigFix SX, impacting operations in <strong>8 countries</strong> while ensuring compliance with international standards</li>
+            <li>� Optimized database design for efficient handling of dataset and model metadata</li>
+        </ul>
+        <h4 style="color: #667eea; margin-top: 15px;">� Connector Framework</h4>
+        <ul>
+            <li>� Developed a secure data migration product for <strong>Jira, Confluence, Zendesk, and ServiceNow</strong> using NiFi, Java, and Docker</li>
+            <li>🛡️ Implemented a role-based login system, <strong>increasing product security by 40%</strong></li>
+            <li>⚡ Improved integration and deployment efficiency by <strong>30%</strong></li>
+            <li>� Optimized NiFi flow scalability, reducing deployment times by <strong>25%</strong> and ensuring high availability for data pipelines</li>
         </ul>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("""
     <div class="experience-card">
-        <h3>💼 Software Developer</h3>
-        <p><strong>🏢 Digital Innovations Ltd.</strong> | 📅 Jun 2021 - Dec 2022</p>
+        <h3>💼 Programmer Analyst Trainee (Internship)</h3>
+        <p><strong>🏢 Cognizant Technologies Solution, Pune, India</strong> | 📅 Jan 2022 - July 2022</p>
         <ul>
-            <li>🔧 Developed RESTful APIs and responsive web applications</li>
-            <li>⚡ Optimized database queries improving application performance by 40%</li>
-            <li>🤝 Collaborated with cross-functional teams using Agile methodologies</li>
-            <li>🛠️ Technologies: Node.js, Express, MongoDB, React, Azure</li>
-        </ul>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="experience-card">
-        <h3>💼 Junior Developer</h3>
-        <p><strong>🏢 StartUp Ventures</strong> | 📅 Jan 2020 - May 2021</p>
-        <ul>
-            <li>🌐 Built and maintained web applications using modern frameworks</li>
-            <li>💳 Integrated third-party APIs and payment gateways</li>
-            <li>📊 Participated in sprint planning and daily standups</li>
-            <li>🛠️ Technologies: Python, Flask, JavaScript, MySQL</li>
+            <li>🌐 Proficient in front-end technologies including <strong>HTML, CSS, JavaScript, and ReactJS</strong></li>
+            <li>☕ Skilled in server-side programming with <strong>Java</strong> and experienced in database management and caching solutions</li>
+            <li>� Contributed to API integration, testing, and debugging in collaborative projects</li>
+            <li>� Resolved bugs and provided technical support for critical systems in a support project</li>
         </ul>
     </div>
     """, unsafe_allow_html=True)
@@ -324,54 +327,62 @@ with tab3:
     with col1:
         st.markdown("""
         <div class="project-card">
-            <h3>🤖 AI Chatbot Platform</h3>
-            <p>Developed an intelligent chatbot using NLP and machine learning</p>
+            <h3>🤖 AION ML Pipeline Platform</h3>
+            <p>Low-code/no-code ML pipeline tool for streamlined ML lifecycle management</p>
             <ul>
-                <li>Built with Python, TensorFlow, and FastAPI</li>
-                <li>Deployed on AWS with auto-scaling</li>
-                <li>Handles 10K+ conversations daily</li>
+                <li>Built backend with Python, Django, SQLite</li>
+                <li>Deployed on Azure Kubernetes with load balancer</li>
+                <li>50% performance boost in data ingestion</li>
+                <li>BYOM feature for custom ML model integration</li>
             </ul>
-            <p><strong>Tech Stack:</strong> Python, TensorFlow, FastAPI, Redis, PostgreSQL</p>
+            <p><strong>Impact:</strong> Doubled operational efficiency during testing</p>
+            <p><strong>Tech Stack:</strong> Python, Django, SQLite, Azure K8s, Docker</p>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown("""
         <div class="project-card">
-            <h3>📊 Data Analytics Dashboard</h3>
-            <p>Real-time analytics dashboard for business intelligence</p>
+            <h3>� Connector Framework</h3>
+            <p>Secure data migration product for enterprise ITSM tools</p>
             <ul>
-                <li>Interactive visualizations with D3.js</li>
-                <li>Real-time data processing pipeline</li>
-                <li>Used by 500+ business users</li>
+                <li>Supports Jira, Confluence, Zendesk, ServiceNow</li>
+                <li>Role-based authentication system</li>
+                <li>40% increase in product security</li>
+                <li>25% reduction in deployment times</li>
             </ul>
-            <p><strong>Tech Stack:</strong> React, D3.js, Python, Apache Kafka, Elasticsearch</p>
+            <p><strong>Impact:</strong> 30% improvement in integration efficiency</p>
+            <p><strong>Tech Stack:</strong> NiFi, Java, Docker, PostgreSQL</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
         st.markdown("""
         <div class="project-card">
-            <h3>🛒 E-commerce Marketplace</h3>
-            <p>Full-stack e-commerce platform with payment integration</p>
+            <h3>� Gen AI Document Summarization</h3>
+            <p>AI-powered document summarization feature for GEM Portal</p>
             <ul>
-                <li>Secure payment processing with Stripe</li>
-                <li>Admin dashboard for inventory management</li>
-                <li>Mobile-responsive design</li>
+                <li>Extracts critical content efficiently</li>
+                <li>Integrated with existing portal infrastructure</li>
+                <li>Leverages generative AI models</li>
+                <li>Real-time processing capabilities</li>
             </ul>
-            <p><strong>Tech Stack:</strong> Django, React, PostgreSQL, Redis, Stripe API</p>
+            <p><strong>Impact:</strong> Streamlined document review process</p>
+            <p><strong>Tech Stack:</strong> Python, Generative AI, Django, FastAPI</p>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown("""
         <div class="project-card">
-            <h3>🔐 Authentication Service</h3>
-            <p>Microservice for user authentication and authorization</p>
+            <h3>� Univariate Forecasting & Data Augmentation</h3>
+            <p>Time series analytics solution for predictive modeling</p>
             <ul>
-                <li>JWT-based authentication</li>
-                <li>OAuth2 integration (Google, GitHub)</li>
-                <li>Rate limiting and security features</li>
+                <li>Advanced forecasting algorithms</li>
+                <li>Data augmentation techniques</li>
+                <li>Real-time performance monitoring</li>
+                <li>Scalable architecture</li>
             </ul>
-            <p><strong>Tech Stack:</strong> Node.js, Express, MongoDB, Redis, Docker</p>
+            <p><strong>Impact:</strong> Enhanced prediction accuracy</p>
+            <p><strong>Tech Stack:</strong> Python, Machine Learning, Azure, Django</p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -382,42 +393,46 @@ with tab4:
     
     with col1:
         st.markdown("### Programming Languages")
-        skills = ["Python", "JavaScript", "TypeScript", "Java", "SQL", "HTML/CSS"]
-        st.markdown(" ".join([f'<span class="skill-badge">{skill}</span>' for skill in skills]), unsafe_allow_html=True)
+        languages = ["Python", "Java", "Shell Scripting", "JavaScript", "SQL"]
+        st.markdown(" ".join([f'<span class="skill-badge">{skill}</span>' for skill in languages]), unsafe_allow_html=True)
         
         st.markdown("### Frameworks & Libraries")
-        frameworks = ["Django", "Flask", "FastAPI", "React", "Node.js", "Express", "TensorFlow", "PyTorch"]
+        frameworks = ["Django", "FastAPI", "ReactJS", "NiFi", "TensorFlow"]
         st.markdown(" ".join([f'<span class="skill-badge">{fw}</span>' for fw in frameworks]), unsafe_allow_html=True)
         
-        st.markdown("### Databases")
-        databases = ["PostgreSQL", "MongoDB", "MySQL", "Redis", "Elasticsearch"]
+        st.markdown("### Databases & Caching")
+        databases = ["SQLite", "PostgreSQL", "Redis", "MySQL"]
         st.markdown(" ".join([f'<span class="skill-badge">{db}</span>' for db in databases]), unsafe_allow_html=True)
+        
+        st.markdown("### ITSM Tools")
+        itsm = ["ServiceNow", "Jira", "Zendesk", "Confluence"]
+        st.markdown(" ".join([f'<span class="skill-badge">{tool}</span>' for tool in itsm]), unsafe_allow_html=True)
     
     with col2:
         st.markdown("### Cloud & DevOps")
-        cloud = ["AWS", "Azure", "Docker", "Kubernetes", "CI/CD", "GitHub Actions"]
+        cloud = ["Azure", "Azure Kubernetes (AKS)", "Docker", "Kubernetes", "JMeter", "GitLab"]
         st.markdown(" ".join([f'<span class="skill-badge">{c}</span>' for c in cloud]), unsafe_allow_html=True)
         
-        st.markdown("### Tools & Technologies")
-        tools = ["Git", "Linux", "REST APIs", "GraphQL", "Microservices", "Agile/Scrum"]
-        st.markdown(" ".join([f'<span class="skill-badge">{tool}</span>' for tool in tools]), unsafe_allow_html=True)
+        st.markdown("### Operating Systems")
+        os_list = ["Windows", "Ubuntu", "Debian", "Linux"]
+        st.markdown(" ".join([f'<span class="skill-badge">{os}</span>' for os in os_list]), unsafe_allow_html=True)
         
-        st.markdown("### Soft Skills")
-        soft = ["Problem Solving", "Team Collaboration", "Code Review", "Mentoring", "Communication"]
-        st.markdown(" ".join([f'<span class="skill-badge">{s}</span>' for s in soft]), unsafe_allow_html=True)
+        st.markdown("### Specialized Skills")
+        specialized = ["Machine Learning Pipelines", "Generative AI", "Data Augmentation", "Univariate Forecasting", "Docker Swarm"]
+        st.markdown(" ".join([f'<span class="skill-badge">{s}</span>' for s in specialized]), unsafe_allow_html=True)
     
     st.markdown("---")
     st.markdown("### 📈 Skill Proficiency")
     
     skill_data = {
-        "Python": 90,
-        "JavaScript": 85,
-        "React": 80,
-        "Django/Flask": 85,
-        "SQL": 80,
-        "AWS": 75,
-        "Docker": 70,
-        "Machine Learning": 65
+        "Python": 95,
+        "Django": 90,
+        "Azure & Kubernetes": 85,
+        "Machine Learning": 85,
+        "Docker": 85,
+        "Database Design": 90,
+        "Java": 75,
+        "Generative AI": 80
     }
     
     for skill, level in skill_data.items():
@@ -432,27 +447,69 @@ with tab5:
     with col1:
         st.markdown("### 🎓 Education")
         st.markdown("""
-        **Bachelor of Technology in Computer Science**  
-        XYZ University | 2016 - 2020  
-        CGPA: 8.5/10
+        **Bachelor of Engineering in Computer Science**  
+        Sagar Institute of Research and Technology Excellence, Bhopal  
+        📅 2018 - 2022
         
-        **Relevant Coursework:**
+        **Key Focus Areas:**
+        - Software Engineering
         - Data Structures & Algorithms
         - Database Management Systems
-        - Web Technologies
         - Machine Learning
-        - Software Engineering
+        - Cloud Computing
+        - Web Technologies
         """)
     
     with col2:
         st.markdown("### 📜 Certifications")
         st.markdown("""
-        - **AWS Certified Solutions Architect** - Amazon (2023)
-        - **Professional Scrum Master I** - Scrum.org (2022)
-        - **Machine Learning Specialization** - Coursera (2022)
-        - **Full Stack Web Development** - Udemy (2021)
-        - **Python for Data Science** - edX (2020)
+        **🏆 Professional Certifications:**
+        
+        - **IBM Data Science Professional Certificate**  
+          _IBM - Data Science & ML Fundamentals_
+        
+        - **The Complete SQL Bootcamp 2022**  
+          _Advanced SQL & Database Management_
+        
+        - **Python for Data Science & Machine Learning Bootcamp**  
+          _Data Analysis, ML, & Statistical Modeling_
+        
+        - **Python Solid Principles**  
+          _Object-Oriented Design & Best Practices_
         """)
+    
+    st.markdown("---")
+    
+    st.markdown("### 🌟 Key Achievements")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.markdown("""
+        <div style="padding: 20px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); border-radius: 15px; text-align: center;">
+            <h2 style="color: #667eea; margin: 0;">50%</h2>
+            <p style="margin: 5px 0;"><strong>Performance Boost</strong></p>
+            <p style="font-size: 0.9rem; color: #666;">Data Ingestion Pipeline</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div style="padding: 20px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); border-radius: 15px; text-align: center;">
+            <h2 style="color: #667eea; margin: 0;">40%</h2>
+            <p style="margin: 5px 0;"><strong>Security Increase</strong></p>
+            <p style="font-size: 0.9rem; color: #666;">Connector Framework</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown("""
+        <div style="padding: 20px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); border-radius: 15px; text-align: center;">
+            <h2 style="color: #667eea; margin: 0;">8+</h2>
+            <p style="margin: 5px 0;"><strong>Countries</strong></p>
+            <p style="font-size: 0.9rem; color: #666;">International Impact</p>
+        </div>
+        """, unsafe_allow_html=True)
 
 with tab6:
     st.markdown('<p class="section-header">Get In Touch</p>', unsafe_allow_html=True)
@@ -504,7 +561,7 @@ with tab6:
             <p><a href="mailto:shivammalviyawork@gmail.com" style="color: #667eea; text-decoration: none; font-weight: 500;">shivammalviyawork@gmail.com</a></p>
             
             <h4 style="color: #667eea; margin-top: 20px;">📱 Phone</h4>
-            <p style="font-weight: 500;">+91-XXXXXXXXXX</p>
+            <p style="font-weight: 500;">+91 7247380914</p>
             
             <h4 style="color: #667eea; margin-top: 20px;">💼 LinkedIn</h4>
             <p><a href="https://www.linkedin.com/in/shivam-malviya-6981b8192/" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 500;">Connect on LinkedIn</a></p>
@@ -551,7 +608,7 @@ with st.sidebar:
     st.markdown("""
     <div style="line-height: 2;">
         📧 <a href="mailto:shivammalviyawork@gmail.com" style="text-decoration: none; color: #667eea;">shivammalviyawork@gmail.com</a><br>
-        📱 <strong>+91-XXXXXXXXXX</strong><br>
+        📱 <strong>+91 7247380914</strong><br>
         💼 <a href="https://www.linkedin.com/in/shivam-malviya-6981b8192/" target="_blank" style="text-decoration: none; color: #667eea;">LinkedIn Profile</a><br>
         💻 <a href="https://github.com/Shivam08-byte" target="_blank" style="text-decoration: none; color: #667eea;">GitHub Portfolio</a>
     </div>
