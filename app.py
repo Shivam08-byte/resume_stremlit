@@ -224,14 +224,14 @@ st.markdown('<p class="sub-header">🚀 Software Developer | 🤖 AI/ML Enthusia
 # Contact Information
 st.markdown("""
     <div class="contact-info">
-        📧 shivammalviya@example.com | 📱 +91-XXXXXXXXXX | 
-        💼 <a href="https://linkedin.com/in/shivammalviya" target="_blank">LinkedIn</a> | 
-        💻 <a href="https://github.com/shivammalviya" target="_blank">GitHub</a>
+        📧 shivammalviyawork@gmail.com | 📱 +91-XXXXXXXXXX | 
+        💼 <a href="https://www.linkedin.com/in/shivam-malviya-6981b8192/" target="_blank">LinkedIn</a> | 
+        💻 <a href="https://github.com/Shivam08-byte" target="_blank">GitHub</a>
     </div>
     """, unsafe_allow_html=True)
 
 # Tabs for different sections
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["🎯 About", "💼 Experience", "🚀 Projects", "🛠️ Skills", "🎓 Education"])
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["🎯 About", "💼 Experience", "🚀 Projects", "🛠️ Skills", "🎓 Education", "📬 Contact"])
 
 with tab1:
     st.markdown('<p class="section-header">About Me</p>', unsafe_allow_html=True)
@@ -454,6 +454,76 @@ with tab5:
         - **Python for Data Science** - edX (2020)
         """)
 
+with tab6:
+    st.markdown('<p class="section-header">Get In Touch</p>', unsafe_allow_html=True)
+    
+    col1, col2 = st.columns([2, 1])
+    
+    with col1:
+        st.markdown("### 📬 Contact Form")
+        st.write("Have a project in mind or want to connect? Drop me a message!")
+        
+        with st.form("contact_form", clear_on_submit=True):
+            name = st.text_input("Your Name *", placeholder="John Doe")
+            email = st.text_input("Your Email *", placeholder="john@example.com")
+            subject = st.selectbox(
+                "Subject *",
+                ["Job Opportunity", "Freelance Project", "Collaboration", "General Inquiry", "Other"]
+            )
+            message = st.text_area("Message *", placeholder="Tell me about your project or inquiry...", height=150)
+            
+            col_btn1, col_btn2, col_btn3 = st.columns([1, 1, 2])
+            with col_btn1:
+                submitted = st.form_submit_button("📤 Send Message", use_container_width=True)
+            
+            if submitted:
+                if name and email and message:
+                    st.success(f"✅ Thank you, {name}! Your message has been received. I'll get back to you soon!")
+                    st.balloons()
+                    
+                    # Here you can add email functionality or save to a database
+                    # For now, we'll just show a success message
+                    
+                    st.info(f"""
+                    **Message Details:**
+                    - **Name:** {name}
+                    - **Email:** {email}
+                    - **Subject:** {subject}
+                    - **Message:** {message}
+                    
+                    _Note: In production, this would be sent via email or saved to a database._
+                    """)
+                else:
+                    st.error("⚠️ Please fill in all required fields!")
+    
+    with col2:
+        st.markdown("### 📞 Direct Contact")
+        st.markdown("""
+        <div style="padding: 20px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); border-radius: 15px; margin-top: 10px;">
+            <h4 style="color: #667eea;">📧 Email</h4>
+            <p><a href="mailto:shivammalviyawork@gmail.com" style="color: #667eea; text-decoration: none; font-weight: 500;">shivammalviyawork@gmail.com</a></p>
+            
+            <h4 style="color: #667eea; margin-top: 20px;">📱 Phone</h4>
+            <p style="font-weight: 500;">+91-XXXXXXXXXX</p>
+            
+            <h4 style="color: #667eea; margin-top: 20px;">💼 LinkedIn</h4>
+            <p><a href="https://www.linkedin.com/in/shivam-malviya-6981b8192/" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 500;">Connect on LinkedIn</a></p>
+            
+            <h4 style="color: #667eea; margin-top: 20px;">💻 GitHub</h4>
+            <p><a href="https://github.com/Shivam08-byte" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 500;">Check out my projects</a></p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div style="padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white; text-align: center;">
+            <h4 style="color: white; margin-top: 0;">⚡ Response Time</h4>
+            <p style="font-size: 1.5rem; font-weight: bold; margin: 10px 0;">24-48 hrs</p>
+            <p style="margin-bottom: 0;">I typically respond within 1-2 business days</p>
+        </div>
+        """, unsafe_allow_html=True)
+
 # Footer
 st.markdown("---")
 st.markdown("""
@@ -480,10 +550,10 @@ with st.sidebar:
     st.markdown("### 📞 Quick Contact")
     st.markdown("""
     <div style="line-height: 2;">
-        📧 <a href="mailto:shivammalviya@example.com" style="text-decoration: none; color: #667eea;">shivammalviya@example.com</a><br>
+        📧 <a href="mailto:shivammalviyawork@gmail.com" style="text-decoration: none; color: #667eea;">shivammalviyawork@gmail.com</a><br>
         📱 <strong>+91-XXXXXXXXXX</strong><br>
-        💼 <a href="https://linkedin.com/in/shivammalviya" target="_blank" style="text-decoration: none; color: #667eea;">LinkedIn Profile</a><br>
-        💻 <a href="https://github.com/shivammalviya" target="_blank" style="text-decoration: none; color: #667eea;">GitHub Portfolio</a>
+        💼 <a href="https://www.linkedin.com/in/shivam-malviya-6981b8192/" target="_blank" style="text-decoration: none; color: #667eea;">LinkedIn Profile</a><br>
+        💻 <a href="https://github.com/Shivam08-byte" target="_blank" style="text-decoration: none; color: #667eea;">GitHub Portfolio</a>
     </div>
     """, unsafe_allow_html=True)
     
