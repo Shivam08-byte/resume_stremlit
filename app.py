@@ -7,6 +7,8 @@ from pathlib import Path
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import json
+import requests
 
 # Page configuration
 st.set_page_config(
@@ -105,6 +107,73 @@ def send_email_notification(name, email, subject, message):
     
     except Exception as e:
         return False, f"Email error: {str(e)}"
+
+# Google Sheets integration function
+def save_to_google_sheets(name, email, subject, message):
+    """Save form submission to Google Sheets"""
+    try:
+        # Try to get Google Sheets webhook URL from secrets
+        try:
+            sheets_url = st.secrets.get("GOOGLE_SHEETS_URL", "")
+        except:
+            sheets_url = os.environ.get("GOOGLE_SHEETS_URL", "")
+        
+        if not sheets_url:
+            return False, "Google Sheets not configured"
+        
+        # Prepare data
+        data = {
+            "timestamp": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            "name": name,
+            "email": email,
+            "subject": subject,
+            "message": message
+        }
+        
+        # Send to Google Sheets via webhook/Apps Script
+        response = requests.post(sheets_url, json=data, timeout=10)
+        
+        if response.status_code == 200:
+            return True, "Saved to Google Sheets"
+        else:
+            return False, f"Sheets error: {response.status_code}"
+    
+    except Exception as e:
+        return False, f"Sheets error: {str(e)}"
+
+# Formspree integration function
+def send_to_formspree(name, email, subject, message):
+    """Send form submission to Formspree"""
+    try:
+        # Try to get Formspree endpoint from secrets
+        try:
+            formspree_url = st.secrets.get("FORMSPREE_ENDPOINT", "")
+        except:
+            formspree_url = os.environ.get("FORMSPREE_ENDPOINT", "")
+        
+        if not formspree_url:
+            return False, "Formspree not configured"
+        
+        # Prepare data for Formspree
+        data = {
+            "name": name,
+            "email": email,
+            "subject": subject,
+            "message": message,
+            "_replyto": email,
+            "_subject": f"Contact Form: {subject}"
+        }
+        
+        # Send to Formspree
+        response = requests.post(formspree_url, data=data, headers={"Accept": "application/json"}, timeout=10)
+        
+        if response.status_code == 200:
+            return True, "Sent via Formspree"
+        else:
+            return False, f"Formspree error: {response.status_code}"
+    
+    except Exception as e:
+        return False, f"Formspree error: {str(e)}"
 
 # Custom CSS with animations and modern design
 st.markdown("""
@@ -631,17 +700,20 @@ with tab6:
             
             if submitted:
                 if name and email and message:
-                    # Save to CSV file
+                    # Track which methods succeeded
+                    success_methods = []
+                    failed_methods = []
+                    
+                    # 1. ALWAYS save to CSV (primary/fallback method)
                     csv_file = 'contact_submissions.csv'
                     file_exists = os.path.isfile(csv_file)
+                    csv_saved = False
                     
                     try:
                         with open(csv_file, 'a', newline='', encoding='utf-8') as f:
                             writer = csv.writer(f)
                             if not file_exists:
-                                # Write header if file doesn't exist
                                 writer.writerow(['Timestamp', 'Name', 'Email', 'Subject', 'Message'])
-                            # Write the submission
                             writer.writerow([
                                 datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                                 name,
@@ -649,29 +721,58 @@ with tab6:
                                 subject,
                                 message
                             ])
-                        
-                        # Try to send email notification
-                        email_sent, email_message = send_email_notification(name, email, subject, message)
-                        
+                        csv_saved = True
+                        success_methods.append("💾 CSV Database")
+                    except Exception as e:
+                        failed_methods.append(f"CSV: {str(e)}")
+                    
+                    # 2. Try to send email notification
+                    email_sent, email_msg = send_email_notification(name, email, subject, message)
+                    if email_sent:
+                        success_methods.append("📧 Email Notification")
+                    elif "not configured" not in email_msg.lower():
+                        failed_methods.append(f"Email: {email_msg}")
+                    
+                    # 3. Try to save to Google Sheets
+                    sheets_saved, sheets_msg = save_to_google_sheets(name, email, subject, message)
+                    if sheets_saved:
+                        success_methods.append("📊 Google Sheets")
+                    elif "not configured" not in sheets_msg.lower():
+                        failed_methods.append(f"Sheets: {sheets_msg}")
+                    
+                    # 4. Try to send via Formspree
+                    formspree_sent, formspree_msg = send_to_formspree(name, email, subject, message)
+                    if formspree_sent:
+                        success_methods.append("📮 Formspree")
+                    elif "not configured" not in formspree_msg.lower():
+                        failed_methods.append(f"Formspree: {formspree_msg}")
+                    
+                    # Show success message
+                    if csv_saved:
                         st.success(f"✅ Thank you, {name}! Your message has been received. I'll get back to you soon!")
                         st.balloons()
                         
-                        if email_sent:
-                            st.info("""
-                            **Message saved and email notification sent!** 📧
-                            
-                            Your contact details have been saved and an email notification has been sent.
-                            """)
-                        else:
+                        # Show which methods worked
+                        if success_methods:
+                            success_text = " • ".join(success_methods)
                             st.info(f"""
-                            **Message saved successfully!** 💾
+                            **Message saved successfully!** 🎉
                             
-                            Your contact details have been recorded and saved to the database.
+                            **Saved via:** {success_text}
                             
-                            _(Email notification: {email_message})_
+                            Your contact details have been recorded and I'll respond within 24-48 hours.
                             """)
-                    except Exception as e:
-                        st.error(f"⚠️ Error saving message: {str(e)}")
+                        
+                        # Show failures as warning (not error since CSV worked)
+                        if failed_methods:
+                            with st.expander("⚠️ Some backup methods failed (click to see details)"):
+                                for method in failed_methods:
+                                    st.warning(method)
+                    else:
+                        st.error("⚠️ Error saving message. Please try again or email me directly at shivammalviyawork@gmail.com")
+                        if failed_methods:
+                            for method in failed_methods:
+                                st.error(method)
                 else:
                     st.error("⚠️ Please fill in all required fields!")
     
