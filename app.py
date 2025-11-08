@@ -192,15 +192,17 @@ def send_to_formspree(name, email, subject, message):
 if st.session_state.dark_mode:
     bg_color = "#1e1e1e"
     text_color = "#e0e0e0"
-    card_bg = "rgba(40, 40, 40, 0.8)"
+    card_bg = "rgba(50, 50, 50, 0.9)"
     hover_shadow = "rgba(102, 126, 234, 0.5)"
     sub_text = "#b0b0b0"
+    muted_text = "#a0a0a0"
 else:
     bg_color = "#ffffff"
     text_color = "#333333"
     card_bg = "rgba(255, 255, 255, 0.9)"
     hover_shadow = "rgba(102, 126, 234, 0.3)"
     sub_text = "#666666"
+    muted_text = "#666666"
 
 st.markdown(f"""
     <style>
@@ -410,25 +412,6 @@ st.markdown(f"""
     
     .stProgress > div > div > div {{
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }}
-    
-    /* Ensure text visibility in both modes */
-    p, li, span, div {{
-        color: {text_color} !important;
-    }}
-    
-    h1, h2, h3, h4, h5, h6 {{
-        color: {text_color} !important;
-    }}
-    
-    /* Keep gradient text headers */
-    .main-header, .section-header {{
-        color: transparent !important;
-    }}
-    
-    /* Ensure Streamlit markdown text is visible */
-    .stMarkdown {{
-        color: {text_color};
     }}
     
     /* Print-friendly styles */
