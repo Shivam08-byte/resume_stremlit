@@ -4,6 +4,9 @@ import base64
 import csv
 import os
 from pathlib import Path
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 # Page configuration
 st.set_page_config(
@@ -12,6 +15,96 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# Email configuration function
+def send_email_notification(name, email, subject, message):
+    """Send email notification when form is submitted"""
+    try:
+        # Email configuration - use Streamlit secrets in production
+        # For local testing, you can set these directly (not recommended for production)
+        
+        # Try to get from Streamlit secrets first (for deployment)
+        try:
+            smtp_server = st.secrets.get("SMTP_SERVER", "smtp.gmail.com")
+            smtp_port = st.secrets.get("SMTP_PORT", 587)
+            sender_email = st.secrets.get("SENDER_EMAIL", "")
+            sender_password = st.secrets.get("SENDER_PASSWORD", "")
+            receiver_email = st.secrets.get("RECEIVER_EMAIL", "shivammalviyawork@gmail.com")
+        except:
+            # Fallback for local development
+            smtp_server = os.environ.get("SMTP_SERVER", "smtp.gmail.com")
+            smtp_port = int(os.environ.get("SMTP_PORT", 587))
+            sender_email = os.environ.get("SENDER_EMAIL", "")
+            sender_password = os.environ.get("SENDER_PASSWORD", "")
+            receiver_email = os.environ.get("RECEIVER_EMAIL", "shivammalviyawork@gmail.com")
+        
+        # Skip if email credentials not configured
+        if not sender_email or not sender_password:
+            return False, "Email credentials not configured"
+        
+        # Create message
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = f"New Contact Form Submission: {subject}"
+        msg["From"] = sender_email
+        msg["To"] = receiver_email
+        msg["Reply-To"] = email
+        
+        # Create HTML email body
+        html_body = f"""
+        <html>
+            <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 10px;">
+                    <h2 style="color: #667eea; border-bottom: 3px solid #667eea; padding-bottom: 10px;">
+                        📬 New Contact Form Submission
+                    </h2>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                        <p><strong style="color: #667eea;">📅 Date & Time:</strong><br>
+                        {datetime.now().strftime('%B %d, %Y at %I:%M %p')}</p>
+                        
+                        <p><strong style="color: #667eea;">👤 Name:</strong><br>
+                        {name}</p>
+                        
+                        <p><strong style="color: #667eea;">📧 Email:</strong><br>
+                        <a href="mailto:{email}" style="color: #667eea;">{email}</a></p>
+                        
+                        <p><strong style="color: #667eea;">📋 Subject:</strong><br>
+                        {subject}</p>
+                        
+                        <p><strong style="color: #667eea;">💬 Message:</strong></p>
+                        <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-left: 4px solid #667eea;">
+                            {message.replace(chr(10), '<br>')}
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; text-align: center;">
+                        <p style="color: white; margin: 0;">
+                            <strong>Reply directly to this email to respond to {name}</strong>
+                        </p>
+                    </div>
+                    
+                    <p style="text-align: center; color: #999; font-size: 12px; margin-top: 20px;">
+                        This email was sent from your portfolio contact form<br>
+                        <a href="https://resumeshivammalviyawork.streamlit.app/" style="color: #667eea;">resumeshivammalviyawork.streamlit.app</a>
+                    </p>
+                </div>
+            </body>
+        </html>
+        """
+        
+        # Attach HTML body
+        msg.attach(MIMEText(html_body, "html"))
+        
+        # Send email
+        with smtplib.SMTP(smtp_server, smtp_port) as server:
+            server.starttls()
+            server.login(sender_email, sender_password)
+            server.send_message(msg)
+        
+        return True, "Email sent successfully"
+    
+    except Exception as e:
+        return False, f"Email error: {str(e)}"
 
 # Custom CSS with animations and modern design
 st.markdown("""
@@ -557,15 +650,26 @@ with tab6:
                                 message
                             ])
                         
+                        # Try to send email notification
+                        email_sent, email_message = send_email_notification(name, email, subject, message)
+                        
                         st.success(f"✅ Thank you, {name}! Your message has been received. I'll get back to you soon!")
                         st.balloons()
                         
-                        st.info(f"""
-                        **Message saved successfully!**
-                        
-                        Your contact details have been recorded and saved to `contact_submissions.csv`.
-                        You can check this file to see all form submissions.
-                        """)
+                        if email_sent:
+                            st.info("""
+                            **Message saved and email notification sent!** 📧
+                            
+                            Your contact details have been saved and an email notification has been sent.
+                            """)
+                        else:
+                            st.info(f"""
+                            **Message saved successfully!** 💾
+                            
+                            Your contact details have been recorded and saved to the database.
+                            
+                            _(Email notification: {email_message})_
+                            """)
                     except Exception as e:
                         st.error(f"⚠️ Error saving message: {str(e)}")
                 else:
