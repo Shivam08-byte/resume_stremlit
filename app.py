@@ -750,7 +750,6 @@ with tab6:
                     # Show success message
                     if csv_saved:
                         st.success(f"✅ Thank you, {name}! Your message has been received. I'll get back to you soon!")
-                        st.balloons()
                         
                         # Show which methods worked
                         if success_methods:
@@ -844,7 +843,6 @@ with st.sidebar:
     st.markdown("<br>", unsafe_allow_html=True)
     
     if st.button("📥 Download PDF Resume", use_container_width=True):
-        st.balloons()
         st.info("🎉 PDF download feature - connect to your actual resume file!")
     
     st.markdown("<br><br>", unsafe_allow_html=True)
