@@ -555,21 +555,7 @@ with tab6:
     
     with col2:
         st.markdown("### 📞 Direct Contact")
-        st.markdown("""
-        <div style="padding: 20px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); border-radius: 15px; margin-top: 10px;">
-            <h4 style="color: #667eea;">📧 Email</h4>
-            <p><a href="mailto:shivammalviyawork@gmail.com" style="color: #667eea; text-decoration: none; font-weight: 500;">shivammalviyawork@gmail.com</a></p>
-            
-            <h4 style="color: #667eea; margin-top: 20px;">📱 Phone</h4>
-            <p style="font-weight: 500;">+91 7247380914</p>
-            
-            <h4 style="color: #667eea; margin-top: 20px;">💼 LinkedIn</h4>
-            <p><a href="https://www.linkedin.com/in/shivam-malviya-6981b8192/" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 500;">Connect on LinkedIn</a></p>
-            
-            <h4 style="color: #667eea; margin-top: 20px;">💻 GitHub</h4>
-            <p><a href="https://github.com/Shivam08-byte" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 500;">Check out my projects</a></p>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("""<div style="padding: 20px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); border-radius: 15px; margin-top: 10px;"><h4 style="color: #667eea;">📧 Email</h4><p><a href="mailto:shivammalviyawork@gmail.com" style="color: #667eea; text-decoration: none; font-weight: 500;">shivammalviyawork@gmail.com</a></p><h4 style="color: #667eea; margin-top: 20px;">📱 Phone</h4><p style="font-weight: 500;">+91 7247380914</p><h4 style="color: #667eea; margin-top: 20px;">💼 LinkedIn</h4><p><a href="https://www.linkedin.com/in/shivam-malviya-6981b8192/" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 500;">Connect on LinkedIn</a></p><h4 style="color: #667eea; margin-top: 20px;">💻 GitHub</h4><p><a href="https://github.com/Shivam08-byte" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 500;">Check out my projects</a></p></div>""", unsafe_allow_html=True)
         
         st.markdown("<br>", unsafe_allow_html=True)
         
