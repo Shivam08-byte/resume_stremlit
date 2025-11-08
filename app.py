@@ -1,0 +1,308 @@
+import streamlit as st
+from datetime import datetime
+
+# Page configuration
+st.set_page_config(
+    page_title="Shivam Malviya - Resume",
+    page_icon="👨‍💻",
+    layout="wide"
+)
+
+# Custom CSS
+st.markdown("""
+    <style>
+    .main-header {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #1E88E5;
+        text-align: center;
+        margin-bottom: 0;
+    }
+    .sub-header {
+        font-size: 1.2rem;
+        color: #666;
+        text-align: center;
+        margin-top: 0;
+    }
+    .section-header {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #1E88E5;
+        border-bottom: 3px solid #1E88E5;
+        padding-bottom: 10px;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+    .contact-info {
+        text-align: center;
+        font-size: 1rem;
+        margin-bottom: 30px;
+    }
+    .skill-badge {
+        display: inline-block;
+        background-color: #E3F2FD;
+        color: #1565C0;
+        padding: 8px 15px;
+        margin: 5px;
+        border-radius: 20px;
+        font-weight: 500;
+    }
+    .experience-card {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border-left: 5px solid #1E88E5;
+    }
+    .project-card {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border-left: 5px solid #43A047;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# Header
+st.markdown('<p class="main-header">Shivam Malviya</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Software Developer | AI/ML Enthusiast</p>', unsafe_allow_html=True)
+
+# Contact Information
+st.markdown("""
+    <div class="contact-info">
+        📧 shivammalviya@example.com | 📱 +91-XXXXXXXXXX | 
+        💼 <a href="https://linkedin.com/in/shivammalviya" target="_blank">LinkedIn</a> | 
+        💻 <a href="https://github.com/shivammalviya" target="_blank">GitHub</a>
+    </div>
+    """, unsafe_allow_html=True)
+
+# Tabs for different sections
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["🎯 About", "💼 Experience", "🚀 Projects", "🛠️ Skills", "🎓 Education"])
+
+with tab1:
+    st.markdown('<p class="section-header">About Me</p>', unsafe_allow_html=True)
+    st.write("""
+    Passionate software developer with expertise in building scalable web applications and AI/ML solutions. 
+    Strong background in full-stack development, data analysis, and problem-solving. Committed to writing 
+    clean, maintainable code and continuously learning new technologies.
+    """)
+    
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("Years of Experience", "3+")
+    with col2:
+        st.metric("Projects Completed", "15+")
+    with col3:
+        st.metric("Technologies", "20+")
+
+with tab2:
+    st.markdown('<p class="section-header">Work Experience</p>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="experience-card">
+        <h3>Senior Software Developer</h3>
+        <p><strong>Tech Solutions Inc.</strong> | Jan 2023 - Present</p>
+        <ul>
+            <li>Led development of a microservices-based e-commerce platform serving 100K+ users</li>
+            <li>Implemented CI/CD pipelines reducing deployment time by 60%</li>
+            <li>Mentored junior developers and conducted code reviews</li>
+            <li>Technologies: Python, Django, React, PostgreSQL, AWS, Docker</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="experience-card">
+        <h3>Software Developer</h3>
+        <p><strong>Digital Innovations Ltd.</strong> | Jun 2021 - Dec 2022</p>
+        <ul>
+            <li>Developed RESTful APIs and responsive web applications</li>
+            <li>Optimized database queries improving application performance by 40%</li>
+            <li>Collaborated with cross-functional teams using Agile methodologies</li>
+            <li>Technologies: Node.js, Express, MongoDB, React, Azure</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="experience-card">
+        <h3>Junior Developer</h3>
+        <p><strong>StartUp Ventures</strong> | Jan 2020 - May 2021</p>
+        <ul>
+            <li>Built and maintained web applications using modern frameworks</li>
+            <li>Integrated third-party APIs and payment gateways</li>
+            <li>Participated in sprint planning and daily standups</li>
+            <li>Technologies: Python, Flask, JavaScript, MySQL</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+
+with tab3:
+    st.markdown('<p class="section-header">Featured Projects</p>', unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("""
+        <div class="project-card">
+            <h3>🤖 AI Chatbot Platform</h3>
+            <p>Developed an intelligent chatbot using NLP and machine learning</p>
+            <ul>
+                <li>Built with Python, TensorFlow, and FastAPI</li>
+                <li>Deployed on AWS with auto-scaling</li>
+                <li>Handles 10K+ conversations daily</li>
+            </ul>
+            <p><strong>Tech Stack:</strong> Python, TensorFlow, FastAPI, Redis, PostgreSQL</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="project-card">
+            <h3>📊 Data Analytics Dashboard</h3>
+            <p>Real-time analytics dashboard for business intelligence</p>
+            <ul>
+                <li>Interactive visualizations with D3.js</li>
+                <li>Real-time data processing pipeline</li>
+                <li>Used by 500+ business users</li>
+            </ul>
+            <p><strong>Tech Stack:</strong> React, D3.js, Python, Apache Kafka, Elasticsearch</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class="project-card">
+            <h3>🛒 E-commerce Marketplace</h3>
+            <p>Full-stack e-commerce platform with payment integration</p>
+            <ul>
+                <li>Secure payment processing with Stripe</li>
+                <li>Admin dashboard for inventory management</li>
+                <li>Mobile-responsive design</li>
+            </ul>
+            <p><strong>Tech Stack:</strong> Django, React, PostgreSQL, Redis, Stripe API</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="project-card">
+            <h3>🔐 Authentication Service</h3>
+            <p>Microservice for user authentication and authorization</p>
+            <ul>
+                <li>JWT-based authentication</li>
+                <li>OAuth2 integration (Google, GitHub)</li>
+                <li>Rate limiting and security features</li>
+            </ul>
+            <p><strong>Tech Stack:</strong> Node.js, Express, MongoDB, Redis, Docker</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+with tab4:
+    st.markdown('<p class="section-header">Technical Skills</p>', unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("### Programming Languages")
+        skills = ["Python", "JavaScript", "TypeScript", "Java", "SQL", "HTML/CSS"]
+        st.markdown(" ".join([f'<span class="skill-badge">{skill}</span>' for skill in skills]), unsafe_allow_html=True)
+        
+        st.markdown("### Frameworks & Libraries")
+        frameworks = ["Django", "Flask", "FastAPI", "React", "Node.js", "Express", "TensorFlow", "PyTorch"]
+        st.markdown(" ".join([f'<span class="skill-badge">{fw}</span>' for fw in frameworks]), unsafe_allow_html=True)
+        
+        st.markdown("### Databases")
+        databases = ["PostgreSQL", "MongoDB", "MySQL", "Redis", "Elasticsearch"]
+        st.markdown(" ".join([f'<span class="skill-badge">{db}</span>' for db in databases]), unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("### Cloud & DevOps")
+        cloud = ["AWS", "Azure", "Docker", "Kubernetes", "CI/CD", "GitHub Actions"]
+        st.markdown(" ".join([f'<span class="skill-badge">{c}</span>' for c in cloud]), unsafe_allow_html=True)
+        
+        st.markdown("### Tools & Technologies")
+        tools = ["Git", "Linux", "REST APIs", "GraphQL", "Microservices", "Agile/Scrum"]
+        st.markdown(" ".join([f'<span class="skill-badge">{tool}</span>' for tool in tools]), unsafe_allow_html=True)
+        
+        st.markdown("### Soft Skills")
+        soft = ["Problem Solving", "Team Collaboration", "Code Review", "Mentoring", "Communication"]
+        st.markdown(" ".join([f'<span class="skill-badge">{s}</span>' for s in soft]), unsafe_allow_html=True)
+    
+    st.markdown("---")
+    st.markdown("### 📈 Skill Proficiency")
+    
+    skill_data = {
+        "Python": 90,
+        "JavaScript": 85,
+        "React": 80,
+        "Django/Flask": 85,
+        "SQL": 80,
+        "AWS": 75,
+        "Docker": 70,
+        "Machine Learning": 65
+    }
+    
+    for skill, level in skill_data.items():
+        st.write(f"**{skill}**")
+        st.progress(level / 100)
+
+with tab5:
+    st.markdown('<p class="section-header">Education & Certifications</p>', unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("### 🎓 Education")
+        st.markdown("""
+        **Bachelor of Technology in Computer Science**  
+        XYZ University | 2016 - 2020  
+        CGPA: 8.5/10
+        
+        **Relevant Coursework:**
+        - Data Structures & Algorithms
+        - Database Management Systems
+        - Web Technologies
+        - Machine Learning
+        - Software Engineering
+        """)
+    
+    with col2:
+        st.markdown("### 📜 Certifications")
+        st.markdown("""
+        - **AWS Certified Solutions Architect** - Amazon (2023)
+        - **Professional Scrum Master I** - Scrum.org (2022)
+        - **Machine Learning Specialization** - Coursera (2022)
+        - **Full Stack Web Development** - Udemy (2021)
+        - **Python for Data Science** - edX (2020)
+        """)
+
+# Footer
+st.markdown("---")
+st.markdown("""
+    <div style="text-align: center; color: #666; padding: 20px;">
+        <p>📱 This interactive resume was built with Streamlit</p>
+        <p>© 2025 Shivam Malviya | Last Updated: November 2025</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# Sidebar - Download Resume Option
+with st.sidebar:
+    st.markdown("### 📄 Resume Options")
+    st.info("💡 This is an interactive version of my resume. Feel free to explore different sections using the tabs above!")
+    
+    st.markdown("### 📞 Quick Contact")
+    st.markdown("""
+    - 📧 Email: shivammalviya@example.com
+    - 📱 Phone: +91-XXXXXXXXXX
+    - 💼 LinkedIn: [Profile](https://linkedin.com/in/shivammalviya)
+    - 💻 GitHub: [Portfolio](https://github.com/shivammalviya)
+    """)
+    
+    st.markdown("### 🌟 Highlights")
+    st.success("✅ 3+ years of experience")
+    st.success("✅ Full-stack development")
+    st.success("✅ AI/ML expertise")
+    st.success("✅ Cloud architecture")
+    
+    if st.button("📥 Download PDF Resume", use_container_width=True):
+        st.info("PDF download feature - connect to your actual resume file!")
